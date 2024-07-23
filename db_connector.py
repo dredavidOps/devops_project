@@ -10,7 +10,6 @@ def db_connect():
     user = 'root'
     passwd = 'Testing123'
 
-
     conn = pymysql.connect(host=host, port=port, user=user, passwd=passwd, db=schema_name)
     return conn
 
@@ -34,7 +33,8 @@ def create_records(user_id, user_name):
 def read_records(user_id):
     connection = db_connect()
     cursor = connection.cursor()
-    query = f"SELECT * FROM mydb.users WHERE users.user_id = '%s'"
+    query = f"SELECT * FROM mydb.users WHERE user_id = '%s'"
+    print(f"Executing SQL: {query} with user_id: {user_id}")
     cursor.execute(query, user_id)
     query_result = cursor.fetchone()
     cursor.close()
@@ -66,7 +66,7 @@ def delete_records(user_id):
 
 
 # print(read_records(user_id=2))
-# print(create_records(user_id=11, user_name="Santos"))
+# print(create_records(user_id=12, user_name="Fabian"))
 # update records in DB
 # print(update_records(user_id=10, user_name="David"))
 # print(delete_records(user_id=1))

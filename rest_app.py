@@ -22,16 +22,17 @@ def route_reporter(user_id):
 
 # POST method to add users to the database
 @app.route("/add_user/", methods=["POST"])
-def user_add(user_id):
+def user_add(user_id, user_name):
     try:
-        user_name = request.json.get("user_name")
-        if not user_name:
-            raise ValueError("id already exists")
-
+        # print(type("user_name"))
+        # user_name = request.json.get(str("user_name"))
+        # if not user_name:
+        #     raise ValueError("id already exists")
         # adding user to the database
-        db_connector.create_records(user_id, user_name)
-
-        return jsonify({"status": "ok", "user_added": user_name}), 200
+        user_added = db_connector.create_records(user_id, user_name)
+        print(user_added)
+        if user_added:
+            return jsonify({"status": "ok", "user_added": user_name}), 200
     except ValueError as e:
         return jsonify({"status": "error", "reason": str(e)}), 500
 
@@ -40,13 +41,16 @@ def user_add(user_id):
 @app.route("/get_user/<user_id>", methods=["GET"])
 def get_user(user_id):
     try:
-        result = db_connector.read_records(user_id)
+        print(type(user_id))
+        result = db_connector.read_records(int(user_id))
+        # if not result:
+        #     return jsonify({"status": "error", "reason": "user not found"}), 404
         if result:
-            # return jsonify({"status": "error", "reason": "user not found"}), 404
-            return jsonify({"status": "ok", "user": user_id}), 200
+            return jsonify({"status": "ok", "result": result}), 200
         if not result:
             return jsonify({"status": "error", "reason": "user not found"}), 404
-    except Exception as e:
+    except ValueError as e:
+        print(e)
         return jsonify({"status": "error", "reason": "no such id"}), 500
 
 
@@ -59,7 +63,7 @@ def update_user(user_id):
             raise ValueError("user_name is required")
 
         # updating user id and adding it to the database
-        updated_result = (db_connector.update_records(user_id, user_name))
+        updated_result = db_connector.update_records(user_id, user_name)
         if updated_result:
             return jsonify({"status": "ok", "user": user_id}), 200
     except Exception as e:
