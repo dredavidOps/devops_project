@@ -33,7 +33,7 @@ def create_records(user_id, user_name):
 def read_records(user_id):
     connection = db_connect()
     cursor = connection.cursor()
-    query = f"SELECT * FROM mydb.users WHERE user_id = '%s'"
+    query = f"SELECT * FROM mydb.users WHERE user_id = %s"
     print(f"Executing SQL: {query} with user_id: {user_id}")
     cursor.execute(query, user_id)
     query_result = cursor.fetchone()
@@ -46,7 +46,7 @@ def read_records(user_id):
 def update_records(user_id, user_name):
     connection = db_connect()
     cursor = connection.cursor()
-    query = f"UPDATE mydb.users SET user_name = %s WHERE user_id = '%s'"
+    query = f"UPDATE mydb.users SET user_name = %s WHERE user_id = %s"
     cursor.execute(query, (user_name, user_id))
     connection.commit()
     cursor.close()
@@ -57,7 +57,7 @@ def update_records(user_id, user_name):
 def delete_records(user_id):
     connection = db_connect()
     cursor = connection.cursor()
-    query = f"DELETE FROM mydb.users WHERE id='%s'"
+    query = f"DELETE FROM mydb.users WHERE user_id =%s"
     cursor.execute(query, user_id)
     connection.commit()
     cursor.close()

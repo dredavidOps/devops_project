@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 
 # function to assign call functions to methods - POST, GET, PUT AND DELETE data
-@app.route("/user/<user_id>", methods=["POST", "GET", "PUT", "DELETE"])
+@app.route("/users/<user_id>", methods=["POST", "GET", "PUT", "DELETE"])
 def route_reporter(user_id):
     try:
         if request.method == "POST":
@@ -32,7 +32,7 @@ def user_add(user_id, user_name):
         user_added = db_connector.create_records(user_id, user_name)
         print(user_added)
         if user_added:
-            return jsonify({"status": "ok", "user_added": user_name}), 200
+            return jsonify({"status": "ok", "user_added": user_name "user_id": user_id}), 200
     except ValueError as e:
         return jsonify({"status": "error", "reason": str(e)}), 500
 
@@ -82,4 +82,4 @@ def delete_user(user_id):
         return jsonify({"status": "error", "reason": str(e)}), 500
 
 
-app.run(host='127.0.0.1', debug=True, port=5001)
+app.run(host='127.0.0.1', debug=True, port=5000)
