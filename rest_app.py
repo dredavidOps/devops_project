@@ -3,17 +3,22 @@ import db_connector
 
 app = Flask(__name__)
 
+users = {}
+
 
 # function to assign call functions to methods - POST, GET, PUT AND DELETE data
 @app.route("/users/<user_id>", methods=["POST", "GET", "PUT", "DELETE"])
 def route_reporter(user_id):
     try:
         if request.method == "POST":
-            return user_add(user_id)
+                return user_add(user_id)
+
         elif request.method == "GET":
             return get_user(user_id)
+
         elif request.method == "PUT":
             return update_user(user_id)
+
         elif request.method == "DELETE":
             return delete_user(user_id)
     except Exception as e:
@@ -22,17 +27,14 @@ def route_reporter(user_id):
 
 # POST method to add users to the database
 @app.route("/add_user/", methods=["POST"])
-def user_add(user_id, user_name):
+def user_add(user_id):
     try:
-        # print(type("user_name"))
-        # user_name = request.json.get(str("user_name"))
-        # if not user_name:
-        #     raise ValueError("id already exists")
-        # adding user to the database
-        user_added = db_connector.create_records(user_id, user_name)
-        print(user_added)
-        if user_added:
-            return jsonify({"status": "ok", "user_added": user_name "user_id": user_id}), 200
+        user_name = request.json.get("user_name")
+        if not user_name:
+            raise ValueError("id already exists")
+        db_connector.create_records(int(user_id), str(user_name))
+        if user_name:
+            return jsonify({"status": "ok", "user_id": user_id, "user_added": user_name}), 200
     except ValueError as e:
         return jsonify({"status": "error", "reason": str(e)}), 500
 
@@ -42,12 +44,11 @@ def user_add(user_id, user_name):
 def get_user(user_id):
     try:
         print(type(user_id))
-        result = db_connector.read_records(int(user_id))
-        # if not result:
-        #     return jsonify({"status": "error", "reason": "user not found"}), 404
-        if result:
-            return jsonify({"status": "ok", "result": result}), 200
-        if not result:
+        user_id = db_connector.read_records(int(user_id))
+
+        if user_id:
+            return jsonify({"status": "ok", "user_id": user_id}), 200
+        if not user_id:
             return jsonify({"status": "error", "reason": "user not found"}), 404
     except ValueError as e:
         print(e)
@@ -61,11 +62,10 @@ def update_user(user_id):
         user_name = request.json.get("user_name")
         if not user_name:
             raise ValueError("user_name is required")
-
         # updating user id and adding it to the database
-        updated_result = db_connector.update_records(user_id, user_name)
-        if updated_result:
-            return jsonify({"status": "ok", "user": user_id}), 200
+        user_id = db_connector.update_records(user_id, user_name)
+        if user_id:
+            return jsonify({"status": "ok", "user_id": user_id, "user_name": user_name}), 200
     except Exception as e:
         return jsonify({"status": "error", "reason": str(e)}), 500
 
@@ -74,7 +74,7 @@ def update_user(user_id):
 @app.route("/delete_user/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
     try:
-        deleted = db_connector.delete_records(user_id)
+        deleted = db_connector.delete_records(int(user_id))
         if not deleted:
             return jsonify({"status": "error", "reason": "user not found"}), 404
         return jsonify({"status": "ok", "user_deleted": user_id}), 200

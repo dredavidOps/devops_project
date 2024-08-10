@@ -14,22 +14,20 @@ def db_connect():
     return conn
 
 
-def create_records(user_id, user_name):
+def create_records(user_id: object, user_name: object) -> object:
     connection = db_connect()
     cursor = connection.cursor()
     # insert data into the table
-    # cursor.execute(f"INSERT into mydb.users (id, name) VALUES ({user_id}, {user_name})")
     query = f"INSERT into mydb.users (user_id, user_name) VALUES (%s, %s)"
-
-    cursor.execute(query, (user_id, user_name))
+    query_result = cursor.execute(query, (user_id, user_name))
     # commit/save data that has been inserted
     connection.commit()
     cursor.close()
     connection.close()
-    return "Success"
+    return query_result
 
 
-# reading from the db
+# reading from the database
 def read_records(user_id):
     connection = db_connect()
     cursor = connection.cursor()
@@ -66,7 +64,7 @@ def delete_records(user_id):
 
 
 # print(read_records(user_id=2))
-# print(create_records(user_id=12, user_name="Fabian"))
+# print(create_records(user_id=10, user_name="Charles"))
 # update records in DB
-# print(update_records(user_id=10, user_name="David"))
-# print(delete_records(user_id=1))
+# print(update_records(user_id=10, user_name="Pete"))
+# print(delete_records(user_id=15))
