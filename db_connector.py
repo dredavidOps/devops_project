@@ -62,7 +62,7 @@ def delete_records(user_id):
     connection.close()
     return "Success"
 
-
+# for testing the sql commands
 # print(read_records(user_id=2))
 # print(create_records(user_id=10, user_name="Charles"))
 # update records in DB

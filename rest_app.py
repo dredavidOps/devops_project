@@ -1,9 +1,17 @@
 from flask import Flask, request, jsonify
 import db_connector
+import os
+import signal
 
 app = Flask(__name__)
 
 users = {}
+
+
+@app.route('/stop_server')
+def stop_server():
+    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    return 'Server Stopped'
 
 
 # function to assign call functions to methods - POST, GET, PUT AND DELETE data
@@ -11,7 +19,7 @@ users = {}
 def route_reporter(user_id):
     try:
         if request.method == "POST":
-                return user_add(user_id)
+            return user_add(user_id)
 
         elif request.method == "GET":
             return get_user(user_id)
