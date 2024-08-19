@@ -2,49 +2,49 @@ pipeline {
     agent any
 
     environment {
-        REPO_URL = 'https://github.com/dredavidOps/devops_project.git'
+        REPO_URL = 'https://your-repo-url.git'
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Pull Code from GitHub') {
             steps {
                 git branch: 'main', url: "${env.REPO_URL}"
             }
         }
 
-        stage('Run db_connector.py') {
+        stage('Run Backend (rest_app.py)') {
             steps {
-                sh 'python db_connector.py'
+                sh 'nohup python rest_app.py &'
             }
         }
 
-        stage('Run rest_app.py') {
+        stage('Run Frontend (web_app.py)') {
             steps {
-                sh 'python rest_app.py'
+                sh 'nohup python web_app.py &'
             }
         }
 
-        stage('Run web_app.py') {
-            steps {
-                sh 'python web_app.py'
-            }
-        }
-
-        stage('Run Frontend Testing') {
-            steps {
-                sh 'python frontend_testing.py'
-            }
-        }
-
-        stage('Run Backend Testing') {
+        stage('Run Backend Testing (backend_testing.py)') {
             steps {
                 sh 'python backend_testing.py'
             }
         }
 
-        stage('Run Combined Testing') {
+        stage('Run Frontend Testing (frontend_testing.py)') {
+            steps {
+                sh 'python frontend_testing.py'
+            }
+        }
+
+        stage('Run Combined Testing (combined_testing.py)') {
             steps {
                 sh 'python combined_testing.py'
+            }
+        }
+
+        stage('Clean Environment (clean_environment.py)') {
+            steps {
+                sh 'python clean_environment.py'
             }
         }
     }
