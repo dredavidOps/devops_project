@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REPO_URL = 'https://your-repo-url.git'
+        REPO_URL = 'https://github.com/dredavidOps/devops_project.git'
     }
 
     stages {
