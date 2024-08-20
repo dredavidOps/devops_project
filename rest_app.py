@@ -90,4 +90,4 @@ def delete_user(user_id):
         return jsonify({"status": "error", "reason": str(e)}), 500
 
 
-app.run(host='127.0.0.1', debug=True, port=5000)
+app.run(host='127.0.0.1', debug=False, port=5000)
