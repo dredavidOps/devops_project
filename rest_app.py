@@ -35,7 +35,7 @@ def route_reporter(user_id):
 
 # POST method to add users to the database
 @app.route("/add_user/", methods=["POST"])
-def user_add(user_id):
+def user_add(user_id:int):
     try:
         user_name = request.json.get("user_name")
         if not user_name:
