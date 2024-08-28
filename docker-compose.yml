@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: Print_Frisk_3_Yum    # Set a strong root password here
+      MYSQL_DATABASE: mydb                     # Optional: create a default database
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"       # Ensures the root password must be set
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  web:
+    build: .
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_HOST=db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=Print_Frisk_3_Yum      # Match the root password here
+      - DATABASE_NAME=your_database
+    ports:
+      - "5001:5000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+networks:
+  app-network:

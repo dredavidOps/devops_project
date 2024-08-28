@@ -1,4 +1,5 @@
 # importing pymysql module to facilitate database connection
+import os
 import pymysql
 
 
@@ -55,7 +56,7 @@ def update_records(user_id, user_name):
 def delete_records(user_id):
     connection = db_connect()
     cursor = connection.cursor()
-    query = f"DELETE FROM mydb.users WHERE user_id =%s"
+    query = f"DELETE FROM mydb.users WHERE user_id = %s"
     cursor.execute(query, user_id)
     connection.commit()
     cursor.close()
