@@ -5,10 +5,10 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: Print_Frisk_3_Yum    # Set a strong root password here
-      MYSQL_DATABASE: mydb                     # Optional: create a default database
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"       # Ensures the root password must be set
+      MYSQL_DATABASE: mydb                     # Optional: create mydb database
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"       # Ensure the root password must be set
     ports:
-      - "3306:3306"
+      - "3306:3306"                        
     networks:
       - app-network
 
@@ -21,7 +21,7 @@ services:
       - DATABASE_PASSWORD=Print_Frisk_3_Yum      # Match the root password here
       - DATABASE_NAME=your_database
     ports:
-      - "5001:5000"
+      - "5001:5000"                       # Ensure the port 5000 or 5001 is open
     depends_on:
       - db
     networks:
