@@ -1,57 +1,67 @@
 pipeline {
     agent any
 
-    environment {
-        REPO_URL = 'https://github.com/dredavidOps/devops_project.git'
-    }
-
     stages {
-        stage('Pull Code from GitHub') {
+        stage('Pull from GitHub') {
             steps {
-                git branch: 'main', url: "${env.REPO_URL}"
+                // Pull code from the GitHub repository
+                git branch: 'main', url: 'https://github.com/dredavidOps/devops_project'
             }
         }
 
-        stage('Run Backend (rest_app.py)') {
+        stage('Run Backend - rest_app.py') {
             steps {
+                // Run the backend application
                 sh 'nohup python rest_app.py &'
             }
         }
 
-        stage('Run Frontend (web_app.py)') {
+        stage('Run Backend Testing') {
             steps {
-                sh 'nohup python web_app.py &'
-            }
-        }
-
-        stage('Run Backend Testing (backend_testing.py)') {
-            steps {
+                // Run backend testing
                 sh 'python backend_testing.py'
             }
         }
 
-        stage('Run Frontend Testing (frontend_testing.py)') {
+        stage('Clean Environment') {
             steps {
-                sh 'python frontend_testing.py'
-            }
-        }
-
-        stage('Run Combined Testing (combined_testing.py)') {
-            steps {
-                sh 'python combined_testing.py'
-            }
-        }
-
-        stage('Clean Environment (clean_environment.py)') {
-            steps {
+                // Run cleanup script
                 sh 'python clean_environment.py'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                // Build Docker image locally
+                sh 'docker build -t drewizzly/flask_api:latest .'
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                // Log in to Docker Hub and push the Docker image
+                withCredentials([string(credentialsId: 'DokerHub_Cred', variable: 'DOCKER_PASSWORD')]) {
+                    sh 'echo "$DOCKER_PASSWORD" | docker login -u drewizzly --password-stdin'
+                }
+                sh 'docker push drewizzly/flask_api:latest'
+            }
+        }
+
+        stage('Set Compose Image Version') {
+            steps {
+                // Update the version inside the .env file for Docker Compose
+                script {
+                    def version = sh(script: "docker images drewizzly/flask_api --format '{{.Tag}}'", returnStdout: true).trim()
+                    sh "sed -i 's/IMAGE_VERSION=.*/IMAGE_VERSION=${version}/' .env"
+                }
             }
         }
     }
 
     post {
         always {
-            cleanWs()
+            // Clean up any remaining resources or background processes
+            sh 'pkill -f rest_app.py || true'
         }
     }
 }

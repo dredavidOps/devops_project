@@ -14,9 +14,10 @@ def stop_server():
     return 'Server Stopped'
 
 
-@app.route('/hello')
-def hello_user():
-    return "<H1 id='welcome'>Welcome!</H1>"
+# route to test html parsing, uncomment if necessary
+# @app.route('/hello')
+# def hello_user():
+#     return "<H1 id='welcome'>Welcome!</H1>"
 
 
 @app.route('/users/<user_id>', methods=["GET"])
