@@ -4,7 +4,7 @@ services:
   db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: Print_Frisk_3_Yum    # Set a strong root password here
+      MYSQL_ROOT_PASSWORD: Testing123    # Set a strong root password here
       MYSQL_DATABASE: mydb                     # Optional: create mydb database
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"       # Ensure the root password must be set
     ports:
@@ -18,8 +18,8 @@ services:
       - FLASK_ENV=development
       - DATABASE_HOST=db
       - DATABASE_USER=root
-      - DATABASE_PASSWORD=Print_Frisk_3_Yum      # Match the root password here
-      - DATABASE_NAME=your_database
+      - DATABASE_PASSWORD=Testing123      # Match the root password here
+      - DATABASE_NAME=mydb
     ports:
       - "5001:5000"                       # Ensure the port 5000 or 5001 is open
     depends_on:
