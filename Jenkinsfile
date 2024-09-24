@@ -53,8 +53,9 @@ pipeline {
             steps {
                 // Run cleanup script
                 sh 'python clean_environment.py'
-                }
             }
+        }
+    }
 
     post {
         always {
