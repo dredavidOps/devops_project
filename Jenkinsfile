@@ -5,7 +5,7 @@ pipeline {
         stage('Pull from GitHub') {
             steps {
                 // Pull code from the GitHub repository
-                git branch: 'main', url: 'https://github.com/dredavidOps/devops_project'
+                git branch: 'main', url: 'https://github.com/dredavidOps/devops_project.git'
             }
         }
 
@@ -26,14 +26,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build Docker image locally
-                sh 'docker build -t your-dockerhub-username/your-image-name:latest .'
+                sh 'docker build -t drewizzly/flask_api:latest .'
             }
         }
 
         stage('Push Docker Image to Docker Hub') {
             steps {
                 // Log in to Docker Hub and push the Docker image
-                withCredentials([string(credentialsId: 'DockerHub Cred', variable: 'DOCKER_PASSWORD')]) {
+                withCredentials([string(credentialsId: 'DockerHub_Cred', variable: 'DOCKER_PASSWORD')]) {
                     sh 'echo "$DOCKER_PASSWORD" | docker login -u drewizzly --password-stdin'
                 }
                 sh 'docker push drewizzly/flask_api:latest'
