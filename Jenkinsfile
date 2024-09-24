@@ -48,16 +48,13 @@ pipeline {
                     sh "sed -i 's/IMAGE_VERSION=.*/IMAGE_VERSION=${version}/' .env"
                 }
             }
-        }
-    }
-
 
         stage('Clean Environment') {
             steps {
                 // Run cleanup script
                 sh 'python clean_environment.py'
+                }
             }
-        }
 
     post {
         always {
