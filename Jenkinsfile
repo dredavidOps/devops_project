@@ -42,10 +42,12 @@ pipeline {
 
         stage('Set Compose Image Version') {
             steps {
+                script {
+                    def version = 'latest'
                 // Update the version inside the .env file for Docker Compose
                 script {
-                    def version = sh(script: "docker images drewizzly/flask_api --format '{{.Tag}}'", returnStdout: true).trim()
-                    sh "sed -i 's/IMAGE_VERSION=.*/IMAGE_VERSION=${version}/' .env"
+                    // def version = sh(script: "docker images drewizzly/flask_api --format '{{.Tag}}'", returnStdout: true).trim()
+                    sh "sed -i '' 's/IMAGE_VERSION=.*/IMAGE_VERSION=${version}/' .env"
                 }
             }
         }
