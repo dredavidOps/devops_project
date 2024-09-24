@@ -23,6 +23,13 @@ pipeline {
             }
         }
 
+        stage('Clean Environment') {
+            steps {
+                // Run cleanup script
+                sh 'python clean_environment.py'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 // Build Docker image locally
@@ -60,14 +67,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Clean Environment') {
-            steps {
-                // Run cleanup script
-                sh 'python clean_environment.py'
-            }
-        }
-    }
 
     post {
         always {
