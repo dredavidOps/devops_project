@@ -33,7 +33,7 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 // Log in to Docker Hub and push the Docker image
-                withCredentials([usernamePassword(credentialsId: 'DockerHub_Cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable:: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'DockerHub_Cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh 'echo "$DOCKER_PASSWORD" | docker login -u drewizzly --password-stdin'
                 }
                 sh 'docker push drewizzly/devops_project:latest'
