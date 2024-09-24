@@ -5,7 +5,7 @@ pipeline {
         stage('Pull from GitHub') {
             steps {
                 // Pull code from the GitHub repository
-                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+                git branch: 'main', url: 'https://github.com/dredavidOps/devops_project'
             }
         }
 
@@ -33,10 +33,10 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 // Log in to Docker Hub and push the Docker image
-                withCredentials([string(credentialsId: 'dockerhub-password', variable: 'DOCKER_PASSWORD')]) {
-                    sh 'echo "$DOCKER_PASSWORD" | docker login -u your-dockerhub-username --password-stdin'
+                withCredentials([string(credentialsId: 'DockerHub Cred', variable: 'DOCKER_PASSWORD')]) {
+                    sh 'echo "$DOCKER_PASSWORD" | docker login -u drewizzly --password-stdin'
                 }
-                sh 'docker push your-dockerhub-username/your-image-name:latest'
+                sh 'docker push drewizzly/flask_api:latest'
             }
         }
 
@@ -44,7 +44,7 @@ pipeline {
             steps {
                 // Update the version inside the .env file for Docker Compose
                 script {
-                    def version = sh(script: "docker images your-dockerhub-username/your-image-name --format '{{.Tag}}'", returnStdout: true).trim()
+                    def version = sh(script: "docker images drewizzly/flask_api --format '{{.Tag}}'", returnStdout: true).trim()
                     sh "sed -i 's/IMAGE_VERSION=.*/IMAGE_VERSION=${version}/' .env"
                 }
             }
