@@ -40,6 +40,17 @@ pipeline {
             }
         }
 
+        stage('Create .env file if it does not exist') {
+            steps {
+                sh '''
+                if [ ! -f .env ]; then
+                    touch .env
+                    echo "IMAGE_VERSION=" > .env
+                fi
+                '''
+            }
+        }
+
         stage('Set Compose Image Version') {
             steps {
                 // Update the version inside the .env file for Docker Compose
