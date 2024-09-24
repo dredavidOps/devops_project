@@ -36,7 +36,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'DockerHub_Cred', variable: 'DOCKER_PASSWORD')]) {
                     sh 'echo "$DOCKER_PASSWORD" | docker login -u drewizzly --password-stdin'
                 }
-                sh 'docker push drewizzly/flask_api:latest'
+                sh 'docker push drewizzly/devops_project:latest'
             }
         }
 
