@@ -20,12 +20,6 @@ pipeline {
             }
         }
 
-        stage('Clean Environment') {
-            steps {
-                sh 'python clean_environment.py'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t drewizzly/flask_api:latest .'
@@ -41,23 +35,15 @@ pipeline {
             }
         }
 
-        stage('Create .env file if it does not exist') {
+        stage('Run Docker Compose') {
             steps {
-                sh '''
-                if [ ! -f .env ]; then
-                    touch .env
-                    echo "IMAGE_VERSION=" > .env
-                fi
-                '''
+                sh 'docker-compose up -d'
             }
         }
 
-        stage('Set Compose Image Version') {
+        stage('Clean Environment') {
             steps {
-                script {
-                    def version = 'latest'
-                    sh "sed -i '' 's/IMAGE_VERSION=.*/IMAGE_VERSION=${version}/' .env"
-                }
+                sh 'python clean_environment.py'
             }
         }
     }
