@@ -1,12 +1,12 @@
 import requests
 
 # post a new user to the REST API using POST method
-endpoint = requests.post("http://127.0.0.1:5000/users/1", json={"user_name": "Klein"})
+endpoint = requests.post("http://127.0.0.1:5000/users/1", json={"user_name": "Klaus"})
 if endpoint.ok:
     print(endpoint.json())
 
 # checks if the posted user is in the database
-endpoint = requests.get("http://127.0.0.1:5000/users/10")
+endpoint = requests.get("http://127.0.0.1:5000/users/9")
 if not endpoint.ok:
     print("something is wrong")
 else:
