@@ -63,8 +63,8 @@ def delete_records(user_id):
     return "Success"
 
 # commands for testing the database connection
-# print(read_records(user_id=2))
-# print(create_records(user_id=10, user_name="Charles"))
+# print(read_records(user_id=1))
+# print(create_records(user_id=5, user_name="Anna"))
 # update records in DB
 # print(update_records(user_id=10, user_name="Pete"))
 # print(delete_records(user_id=15))
