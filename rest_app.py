@@ -10,7 +10,7 @@ users = {}
 
 @app.route('/stop_server')
 def stop_server():
-    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    os.kill(os.getpid(), signal.SIGINT)
     return 'Server Stopped'
 
 
@@ -34,12 +34,12 @@ def route_reporter(user_id):
 
 
 # POST method to add users to the database
-@app.route("/add_user/", methods=["POST"])
+@app.route("/add_user/<user_id>", methods=["POST"])
 def user_add(user_id):
     try:
         user_name = request.json.get("user_name")
         if not user_name:
-            raise ValueError("id already exists")
+            raise ValueError("user_name is required")
         db_connector.create_records(int(user_id), str(user_name))
         if user_name:
             return jsonify({"status": "ok", "user_id": user_id, "user_added": user_name}), 200
