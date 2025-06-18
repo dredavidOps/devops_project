@@ -16,7 +16,7 @@ pipeline {
 
         stage('Run Backend Testing') {
             steps {
-                sh 'python backend_testing.py'
+                sh 'pytest -v'
             }
         }
 
